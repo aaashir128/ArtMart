@@ -1,0 +1,36 @@
+.AuthPage {
+  background-image: url("../../assets/authBg.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+}
+
+.AuthPage-main {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 80%;
+  height: 80vh; /* Set the height of AuthPage-main to 80% of the viewport height */
+  margin: 0 auto; /* Center the container horizontally */
+  background-color: white; /* Set a white background */
+  padding: 20px; /* Add padding as needed */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add a box shadow for better visibility */
+  border-radius: 21.26px;
+  padding: 32px;
+}
+
+.AuthPage-mid {
+  width: 2px;
+  height: 80%;
+  background-color: black;
+}
+
+.AuthPage-left {
+  flex: 0.45;
+}
+.AuthPage-right {
+  flex: 0.45;
+}
