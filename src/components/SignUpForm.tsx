@@ -48,6 +48,7 @@ const SignUpForm = ({}: LoginProps) => {
                   progress: undefined,
                   theme: "light",
                 });
+                navigate("/register/info");
               })
               .catch((res) => {
                 console.log(res.message);
@@ -72,6 +73,26 @@ const SignUpForm = ({}: LoginProps) => {
           }}
         >
           <Form className="flex flex-col justify-start content-start items-start w-full max-w-md gap-y-2">
+            <label className="font-semibold text-[14px]" htmlFor="firstName">
+              First Name
+            </label>
+            <Field
+              id="firstName"
+              name="firstName"
+              placeholder="John"
+              className="g-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            />
+
+            <label className="font-semibold text-[14px]" htmlFor="lastName">
+              Last Name
+            </label>
+            <Field
+              id="lastName"
+              name="lastName"
+              placeholder="Doe"
+              className="g-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            />
+
             <label className="font-semibold text-[14px]" htmlFor="phone">
               Phone Number
             </label>
@@ -107,7 +128,7 @@ const SignUpForm = ({}: LoginProps) => {
             </label>
             <Field
               id="password"
-              name="password"
+              name="confirmPassword"
               placeholder="Password"
               type="password"
               className="g-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"

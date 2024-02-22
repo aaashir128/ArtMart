@@ -17,16 +17,16 @@ export enum ArtSpecialization {
 }
 
 interface User {
- userData:{ firstName?: string;
-  lastName?: string;
-  email: string;
-  password: string;
-  userRole?: UserRole;}
+  userData: {
+    firstName?: string;
+    lastName?: string;
+    email: string;
+    password: string;
+    userRole?: UserRole;
+  };
 
- 
   RegistrationDate?: Date;
-  tokens: {refreshToken?: string;
-  AccessToken?: string;}
+  tokens: { refreshToken?: string; AccessToken?: string };
 
   sellerDetails?: {
     storeName?: string;
@@ -38,12 +38,13 @@ interface User {
     country?: string;
 
     storeAddress?: string;
+    cnic?: string;
+    kyc?: string;
     state?: string;
     area?: string;
     district?: string;
     shopType?: ShopType;
-    artSpecialization?:
-      | ArtSpecialization
+    artSpecialization?: ArtSpecialization | string;
   };
 }
 

@@ -1,57 +1,47 @@
 import axios from "axios";
 import type User from "../store/user/userInterface";
 
-
 const instance = axios.create({
-    baseURL: "http://localhost:3000/api/v1/user",
-  withCredentials:true
-  });
-  
+  baseURL: "http://localhost:3000/api/v1/user",
+  withCredentials: true,
+});
 
-  export const registerUser = async (payload : User["userData"]) => {
+export const updateSellerAPI = async (
+  payload: User["sellerDetails"],
+  userId: string
+) => {
+  const response = await instance.put(`/update/${userId}`, payload);
+  return response;
+};
 
-   
-  
-    const response = await instance.post(`/register`,payload);
-      return response;
-  
-  
-     
-  };
+export const registerUser = async (payload: User["userData"]) => {
+  const response = await instance.post(`/register`, payload);
+  return response;
+};
 
+export const loginUser = async (payload: User["userData"]) => {
+  const response = await instance.post(`/login`, payload);
+  return response;
+};
 
-  
-  export const loginUser = async (payload : User["userData"]) => {
+const instanceLogin = axios.create({
+  baseURL: "http://localhost:3000/api/v1/user",
+  withCredentials: true,
+});
 
-   
-  
-    const response = await instance.post(`/login`,payload);
-      return response;
-  
-  
-     
-  };
+instanceLogin.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem("accessToken");
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
 
-  const instanceLogin = axios.create({
-    baseURL: "http://localhost:3000/api/v1/user",
-  withCredentials:true
-  });
-  
-
-  instanceLogin.interceptors.request.use(
-    (config) => {
-      const token = localStorage.getItem('accessToken');
-      if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
-      }
-      return config;
-    },
-    (error) => Promise.reject(error)
-  );
-  
-
-  // Add a response interceptor
-  instanceLogin.interceptors.response.use(
+// Add a response interceptor
+instanceLogin.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
@@ -62,11 +52,14 @@ const instance = axios.create({
       originalRequest._retry = true;
 
       try {
-        const refreshToken = localStorage.getItem('refreshToken');
-        const response = await axios.post('http://localhost:3000/api/v1/user/refresh-token', { refreshToken });
+        const refreshToken = localStorage.getItem("refreshToken");
+        const response = await axios.post(
+          "http://localhost:3000/api/v1/user/refresh-token",
+          { refreshToken }
+        );
         const { token } = response.data;
 
-        localStorage.setItem('accessToken', token);
+        localStorage.setItem("accessToken", token);
 
         // Retry the original request with the new token
         originalRequest.headers.Authorization = `Bearer ${token}`;
@@ -79,4 +72,4 @@ const instance = axios.create({
     return Promise.reject(error);
   }
 );
-  export default instanceLogin;
+export default instanceLogin;

@@ -20,7 +20,7 @@ function App() {
     // <Suspense fallback={<LoadingScreen />}>
     <Router>
       <Routes>
-        <Route path="/" element={<Profile />} />
+        <Route path="/" element={<LoginServices />} />
         <Route path="/login" element={<LoginServices />} />
         <Route path="/register" element={<SignupServices />} />
         <Route path="/register/info" element={<SellerInfoServices />} />

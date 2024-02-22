@@ -1,5 +1,5 @@
 import React from "react";
-import { UserRole } from "../store/user/userInterface";
+import { ShopType, UserRole } from "../store/user/userInterface";
 import { useAppDispatch } from "../store/user/user.hooks";
 
 import { Field, Form, Formik } from "formik";
@@ -9,12 +9,15 @@ import { useNavigate } from "react-router-dom";
 import authLogo from "../assets/authLogo.png";
 import formHero from "../assets/formBg.png";
 import ProgressSteps from "./ProgressSteps";
+import {  updateSellerAPI } from "../api/expressAPI";
+import { useSelector } from "react-redux";
 
 type SellerInfoFormProps = {};
 
 const SellerInfoForm = ({}: SellerInfoFormProps) => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const user = useSelector((state: any) => state.user);
 
   return (
     <div className="p-12">
@@ -31,55 +34,49 @@ const SellerInfoForm = ({}: SellerInfoFormProps) => {
       <div className="flex justify-between items-center">
         <Formik
           initialValues={{
-            store: "",
-            email: "",
-            phone: "",
-            address: "",
+            storeName: "",
+            storeEmail: "",
+            storePhoneNumber: "",
+            sellerAddress: "",
             country: "",
             state: "",
             cnic: "",
             kyc: "",
-            userRole: UserRole.BUYER,
+            userRole: ShopType,
           }}
           onSubmit={async (values) => {
             console.log("onSubmit", values);
             await new Promise((r) => setTimeout(r, 500));
             // dispatch(setUser(values));
 
-            // registerUser(values)
-            //   .then((res) => {
-            //     console.log(res.data);
-            //     toast.success(`${res.data.message}`, {
-            //       position: "bottom-right",
-            //       autoClose: 2500,
-            //       hideProgressBar: false,
-            //       closeOnClick: true,
-            //       pauseOnHover: true,
-            //       draggable: true,
-            //       progress: undefined,
-            //       theme: "light",
-            //     });
-            //   })
-            //   .catch((res) => {
-            //     console.log(res.message);
-            //     toast.error(
-            //       `${
-            //         String(res.message).includes("409")
-            //           ? "User is Already Registered"
-            //           : res.message
-            //       }`,
-            //       {
-            //         position: "bottom-right",
-            //         autoClose: 2500,
-            //         hideProgressBar: false,
-            //         closeOnClick: true,
-            //         pauseOnHover: true,
-            //         draggable: true,
-            //         progress: undefined,
-            //         theme: "light",
-            //       }
-            //     );
-            //   });
+            updateSellerAPI(values, user?._id)
+              .then((res) => {
+                console.log(res.data);
+                toast.success(`${res.data.message}`, {
+                  position: "bottom-right",
+                  autoClose: 2500,
+                  hideProgressBar: false,
+                  closeOnClick: true,
+                  pauseOnHover: true,
+                  draggable: true,
+                  progress: undefined,
+                  theme: "light",
+                });
+                navigate("/register/art");
+              })
+              .catch((res) => {
+                console.log(res.message);
+                toast.error(`${res.message}`, {
+                  position: "bottom-right",
+                  autoClose: 2500,
+                  hideProgressBar: false,
+                  closeOnClick: true,
+                  pauseOnHover: true,
+                  draggable: true,
+                  progress: undefined,
+                  theme: "light",
+                });
+              });
           }}
         >
           <Form className="flex flex-col justify-start content-start items-start w-full max-w-md gap-y-2">
@@ -88,7 +85,7 @@ const SellerInfoForm = ({}: SellerInfoFormProps) => {
             </label>
             <Field
               id="store"
-              name="store"
+              name="storeName"
               placeholder="+92"
               className="g-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             />
@@ -98,7 +95,7 @@ const SellerInfoForm = ({}: SellerInfoFormProps) => {
             </label>
             <Field
               id="email"
-              name="email"
+              name="storeEmail"
               placeholder="Email"
               className="g-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             />
@@ -108,7 +105,7 @@ const SellerInfoForm = ({}: SellerInfoFormProps) => {
             </label>
             <Field
               id="phone"
-              name="phone"
+              name="storePhoneNumber"
               placeholder="+92"
               type="text"
               className="g-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -118,7 +115,7 @@ const SellerInfoForm = ({}: SellerInfoFormProps) => {
             </label>
             <Field
               id="address"
-              name="address"
+              name="sellerAddress"
               placeholder="Address"
               type="text"
               className="g-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -162,10 +159,8 @@ const SellerInfoForm = ({}: SellerInfoFormProps) => {
               name="userRole"
               className="g-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             >
-              <option value="sole">I am in Individual Artist</option>
-              <option value="associated">
-                I am a sole trader or incorpated associated artist
-              </option>
+              <option value="INDIVIDUAL">Individual</option>
+              <option value="TRADER_BUSINESS">Trader Business</option>
             </Field>
 
             <div className="flex space-x-6 mt-6">
